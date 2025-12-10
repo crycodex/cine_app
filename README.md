@@ -237,7 +237,7 @@ This project follows Flutter and Dart best practices:
 
 ## 📄 License
 
-This project is private and not intended for publication.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 

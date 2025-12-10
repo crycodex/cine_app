@@ -10,37 +10,66 @@ class CreditsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: theme.colorScheme.primary,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isDark
+                ? [
+                    theme.colorScheme.primary.withValues(alpha: 0.3),
+                    theme.colorScheme.primary.withValues(alpha: 0.1),
+                    Colors.black,
+                  ]
+                : [
+                    theme.colorScheme.primary.withValues(alpha: 0.2),
+                    theme.colorScheme.primary.withValues(alpha: 0.05),
+                    Colors.white,
+                  ],
+          ),
         ),
         child: SafeArea(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
               SliverAppBar(
-                expandedHeight: 100,
+                expandedHeight: 120,
                 floating: false,
                 pinned: true,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => context.pop(),
+                leading: Container(
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? Colors.black.withValues(alpha: 0.5)
+                        : Colors.white.withValues(alpha: 0.9),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_rounded,
+                      color: theme.colorScheme.primary,
+                    ),
+                    onPressed: () => context.pop(),
+                  ),
                 ),
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   title: Text(
-                    "Créditos",
+                    "Acerca de",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme.colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
                       shadows: [
                         Shadow(
-                          color: Colors.black.withValues(alpha: 0.5),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.5)
+                              : Colors.white.withValues(alpha: 0.8),
                           blurRadius: 10,
                         ),
                       ],
@@ -50,18 +79,20 @@ class CreditsScreen extends StatelessWidget {
               ),
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.all(24.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
-                      _buildDeveloperCard(context, theme, size),
+                      _buildDeveloperCard(context, theme, size, isDark),
+                      const SizedBox(height: 24),
+                      _buildAppInfoCard(context, theme, isDark),
+                      const SizedBox(height: 24),
+                      _buildTechnologiesCard(context, theme, isDark),
+                      const SizedBox(height: 24),
+                      _buildRecommendedAppsCard(context, theme, isDark),
+                      const SizedBox(height: 24),
+                      _buildFooter(context, theme, isDark),
                       const SizedBox(height: 30),
-                      _buildAppInfoCard(context, theme),
-                      const SizedBox(height: 30),
-                      _buildTechnologiesCard(context, theme),
-                      const SizedBox(height: 30),
-                      _buildFooter(context, theme),
-                      const SizedBox(height: 50),
                     ],
                   ),
                 ),
@@ -77,69 +108,90 @@ class CreditsScreen extends StatelessWidget {
     BuildContext context,
     ThemeData theme,
     Size size,
+    bool isDark,
   ) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
-        borderRadius: BorderRadius.circular(24),
+        color: isDark
+            ? theme.colorScheme.surface.withValues(alpha: 0.9)
+            : Colors.white,
+        borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: theme.colorScheme.primary.withValues(alpha: 0.2),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+            spreadRadius: 0,
           ),
         ],
       ),
       child: Column(
         children: [
           Container(
-            width: 120,
-            height: 120,
+            width: 140,
+            height: 140,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: theme.colorScheme.primary,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.7),
+                ],
+              ),
               boxShadow: [
                 BoxShadow(
                   color: theme.colorScheme.primary.withValues(alpha: 0.4),
-                  blurRadius: 20,
+                  blurRadius: 25,
                   spreadRadius: 5,
                 ),
               ],
             ),
             child: const Icon(
-              Icons.person,
-              size: 60,
+              Icons.person_rounded,
+              size: 70,
               color: Colors.white,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Text(
             "Desarrollador",
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: theme.colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
+              letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "Cristhian Recalde",
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 32,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.primary,
+              letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 16),
-          Text(
-            "Desarrollador Flutter apasionado por crear experiencias móviles excepcionales",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-              height: 1.5,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              "Desarrollador Flutter apasionado por crear experiencias móviles excepcionales",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.6,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -147,16 +199,18 @@ class CreditsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppInfoCard(BuildContext context, ThemeData theme) {
+  Widget _buildAppInfoCard(BuildContext context, ThemeData theme, bool isDark) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
+        color: isDark
+            ? theme.colorScheme.surface.withValues(alpha: 0.9)
+            : Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -167,39 +221,46 @@ class CreditsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.movie,
-                color: theme.colorScheme.primary,
-                size: 28,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.movie_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 28,
+                ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               Text(
                 "Sobre la App",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           _buildInfoRow(
-            Icons.info_outline,
+            Icons.info_outline_rounded,
             "Versión",
             "1.0.0",
             theme,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           _buildInfoRow(
-            Icons.calendar_today,
+            Icons.calendar_today_rounded,
             "Año",
             "2025",
             theme,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
           _buildInfoRow(
-            Icons.description,
+            Icons.description_rounded,
             "Descripción",
             "Aplicación de películas con información detallada",
             theme,
@@ -218,8 +279,19 @@ class CreditsScreen extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: theme.colorScheme.primary, size: 20),
-        const SizedBox(width: 12),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            icon,
+            color: theme.colorScheme.primary,
+            size: 20,
+          ),
+        ),
+        const SizedBox(width: 16),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -227,17 +299,17 @@ class CreditsScreen extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
+                  fontSize: 13,
+                  color: theme.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 value,
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[900],
+                  fontSize: 17,
+                  color: theme.colorScheme.onSurface,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -248,23 +320,31 @@ class CreditsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTechnologiesCard(BuildContext context, ThemeData theme) {
+  Widget _buildTechnologiesCard(
+    BuildContext context,
+    ThemeData theme,
+    bool isDark,
+  ) {
     final technologies = [
-      {"name": "Flutter", "icon": Icons.mobile_friendly},
-      {"name": "Dart", "icon": Icons.code},
-      {"name": "Riverpod", "icon": Icons.widgets},
-      {"name": "Clean Architecture", "icon": Icons.architecture},
+      {"name": "Flutter", "icon": Icons.mobile_friendly_rounded},
+      {"name": "Dart", "icon": Icons.code_rounded},
+      {"name": "Riverpod", "icon": Icons.widgets_rounded},
+      {"name": "Clean Architecture", "icon": Icons.architecture_rounded},
+      {"name": "Drift", "icon": Icons.storage_rounded},
+      {"name": "Dio", "icon": Icons.cloud_rounded},
     ];
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.95),
+        color: isDark
+            ? theme.colorScheme.surface.withValues(alpha: 0.9)
+            : Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -275,38 +355,52 @@ class CreditsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.build,
-                color: theme.colorScheme.primary,
-                size: 28,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.build_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 28,
+                ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 16),
               Text(
                 "Tecnologías",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: theme.colorScheme.primary,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           Wrap(
             spacing: 12,
             runSpacing: 12,
             children: technologies.map((tech) {
               return Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
+                  horizontal: 18,
+                  vertical: 14,
                 ),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      theme.colorScheme.primary.withValues(alpha: 0.15),
+                      theme.colorScheme.primary.withValues(alpha: 0.08),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(18),
                   border: Border.all(
                     color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                    width: 1,
+                    width: 1.5,
                   ),
                 ),
                 child: Row(
@@ -315,13 +409,13 @@ class CreditsScreen extends StatelessWidget {
                     Icon(
                       tech["icon"] as IconData,
                       color: theme.colorScheme.primary,
-                      size: 20,
+                      size: 22,
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 10),
                     Text(
                       tech["name"] as String,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: theme.colorScheme.primary,
                       ),
@@ -336,27 +430,132 @@ class CreditsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFooter(BuildContext context, ThemeData theme) {
+  Widget _buildRecommendedAppsCard(
+    BuildContext context,
+    ThemeData theme,
+    bool isDark,
+  ) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: isDark
+            ? theme.colorScheme.surface.withValues(alpha: 0.9)
+            : Colors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Hecho con ❤️ usando Flutter",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white.withValues(alpha: 0.9),
-              fontWeight: FontWeight.w500,
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  Icons.apps_rounded,
+                  color: theme.colorScheme.primary,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Text(
+                "Apps Recomendadas",
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                Icon(
+                  Icons.apps_outlined,
+                  size: 48,
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  "Próximamente",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Descubre más aplicaciones del desarrollador",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: theme.colorScheme.onSurfaceVariant,
+                    height: 1.5,
+                  ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter(BuildContext context, ThemeData theme, bool isDark) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 24),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.favorite_rounded,
+                size: 20,
+                color: Colors.red,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                "Hecho con amor usando Flutter",
+                style: TextStyle(
+                  fontSize: 15,
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
           Text(
             "© 2025 Cine App. Todos los derechos reservados.",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 12,
-              color: Colors.white.withValues(alpha: 0.7),
+              fontSize: 13,
+              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -364,4 +563,3 @@ class CreditsScreen extends StatelessWidget {
     );
   }
 }
-
