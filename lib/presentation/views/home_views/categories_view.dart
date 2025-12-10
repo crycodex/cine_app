@@ -20,9 +20,14 @@ class _CategoriesViewState extends ConsumerState<CategoriesView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final upcomingMovies = ref.watch(upcomingMoviesProvider);
+    final movies = ref.watch(categoriesMoviesProvider);
 
-    if (upcomingMovies.isEmpty) {
+    if (movies.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref.read(categoriesMoviesProvider.notifier).loadNextPage();
+        }
+      });
       final theme = Theme.of(context);
       return Scaffold(
         body: Container(
@@ -52,10 +57,10 @@ class _CategoriesViewState extends ConsumerState<CategoriesView>
       body: Stack(
         children: [
           MovieMansory(
-            movies: upcomingMovies,
+            movies: movies,
             loadMoreMovies: () async {
-              await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-              return ref.read(upcomingMoviesProvider);
+              await ref.read(categoriesMoviesProvider.notifier).loadNextPage();
+              return ref.read(categoriesMoviesProvider);
             },
           ),
           Positioned(

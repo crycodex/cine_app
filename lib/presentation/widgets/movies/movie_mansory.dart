@@ -21,32 +21,58 @@ class _MovieMansoryState extends State<MovieMansory> {
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(() {
-      if (widget.loadMoreMovies == null) return;
-      if (scrollController.position.pixels + 100 >=
-          scrollController.position.maxScrollExtent) {
-        loadNextPageMovies();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollController.addListener(_onScroll);
     });
   }
 
   @override
   void dispose() {
-    super.dispose();
+    scrollController.removeListener(_onScroll);
     scrollController.dispose();
+    super.dispose();
   }
 
-  void loadNextPageMovies() async {
+  void _onScroll() {
+    if (widget.loadMoreMovies == null) return;
+    if (isLoading || isLastPage) return;
+    if (!scrollController.hasClients) return;
+
+    final maxScroll = scrollController.position.maxScrollExtent;
+    final currentScroll = scrollController.position.pixels;
+    final threshold = maxScroll * 0.8;
+
+    if (currentScroll >= threshold && maxScroll > 0) {
+      loadNextPageMovies();
+    }
+  }
+
+  Future<void> loadNextPageMovies() async {
     if (isLoading || isLastPage) return;
     if (widget.loadMoreMovies == null) return;
 
-    isLoading = true;
-    final newMovies = await widget.loadMoreMovies!();
-    isLoading = false;
+    setState(() {
+      isLoading = true;
+    });
 
-    if (newMovies.isEmpty) {
-      isLastPage = true;
-      return;
+    try {
+      final previousLength = widget.movies.length;
+      final allMovies = await widget.loadMoreMovies!();
+
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          if (allMovies.isEmpty || allMovies.length == previousLength) {
+            isLastPage = true;
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
