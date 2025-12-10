@@ -150,13 +150,17 @@ class CreditsScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Icon(
-              Icons.person_rounded,
-              size: 70,
-              color: Colors.white,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset(
+                "assets/profile.jpeg",
+                width: 140,
+                height: 140,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           Text(
             "Desarrollador",
             style: TextStyle(
@@ -184,7 +188,7 @@ class CreditsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(
-              "Desarrollador Flutter apasionado por crear experiencias móviles excepcionales",
+              "Ingeniero en Tecnologías de la Información, Desarrollador de Software y Creeador de contenido de programación de Ecuador, Ibarra 🇪🇨. Especializado en el desarrollo web y movil de impacto",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 15,
@@ -245,19 +249,9 @@ class CreditsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          _buildInfoRow(
-            Icons.info_outline_rounded,
-            "Versión",
-            "1.0.0",
-            theme,
-          ),
+          _buildInfoRow(Icons.info_outline_rounded, "Versión", "1.0.0", theme),
           const SizedBox(height: 20),
-          _buildInfoRow(
-            Icons.calendar_today_rounded,
-            "Año",
-            "2025",
-            theme,
-          ),
+          _buildInfoRow(Icons.calendar_today_rounded, "Año", "2025", theme),
           const SizedBox(height: 20),
           _buildInfoRow(
             Icons.description_rounded,
@@ -285,11 +279,7 @@ class CreditsScreen extends StatelessWidget {
             color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(
-            icon,
-            color: theme.colorScheme.primary,
-            size: 20,
-          ),
+          child: Icon(icon, color: theme.colorScheme.primary, size: 20),
         ),
         const SizedBox(width: 16),
         Expanded(
@@ -533,11 +523,7 @@ class CreditsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.favorite_rounded,
-                size: 20,
-                color: Colors.red,
-              ),
+              Icon(Icons.favorite_rounded, size: 20, color: Colors.red),
               const SizedBox(width: 8),
               Text(
                 "Hecho con amor usando Flutter",
