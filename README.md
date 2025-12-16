@@ -134,9 +134,16 @@ flutter devices
 
 ### Android
 
+**⚠️ Importante**: Antes de construir para producción, debes configurar el keystore para firmar la aplicación. Ver [KEYSTORE_SETUP.md](android/KEYSTORE_SETUP.md) para instrucciones detalladas.
+
 ```bash
+# Configurar keystore (solo la primera vez)
+./android/generate_keystore.sh
+
+# Construir APK firmado
 flutter build apk --release
-# or
+
+# Construir Android App Bundle (AAB) firmado
 flutter build appbundle --release
 ```
 
