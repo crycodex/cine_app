@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DeveloperCard extends StatelessWidget {
   final ThemeData theme;
   final bool isDark;
 
-  const DeveloperCard({
-    super.key,
-    required this.theme,
-    required this.isDark,
-  });
+  const DeveloperCard({super.key, required this.theme, required this.isDark});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +69,7 @@ class DeveloperCard extends StatelessWidget {
               letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           Text(
             "Cristhian Recalde",
             style: TextStyle(
@@ -93,16 +90,94 @@ class DeveloperCard extends StatelessWidget {
               "Ingeniero en Tecnologías de la Información, Desarrollador de Software y Creeador de contenido de programación de Ecuador, Ibarra 🇪🇨. Especializado en el desarrollo web y movil de impacto",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 13,
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.6,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
+          const SizedBox(height: 24),
+          _buildSocialLinks(context),
         ],
       ),
     );
   }
-}
 
+  Widget _buildSocialLinks(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildSocialButton(
+          context: context,
+          icon: Icons.public,
+          url: "https://www.isnotcristhianr.dev/",
+          tooltip: "Portafolio",
+        ),
+        const SizedBox(width: 16),
+        _buildSocialButton(
+          context: context,
+          icon: Icons.code,
+          url: "https://github.com/crycodex",
+          tooltip: "GitHub",
+        ),
+        const SizedBox(width: 16),
+        _buildSocialButton(
+          context: context,
+          icon: Icons.work,
+          url: "https://www.linkedin.com/in/isnotcristhianr/",
+          tooltip: "LinkedIn",
+        ),
+        const SizedBox(width: 16),
+        _buildSocialButton(
+          context: context,
+          icon: Icons.play_circle_filled,
+          url: "https://www.youtube.com/@cry_code",
+          tooltip: "YouTube",
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialButton({
+    required BuildContext context,
+    required IconData icon,
+    required String url,
+    required String tooltip,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _openUrl(url),
+          borderRadius: BorderRadius.circular(16),
+          child: Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
+            ),
+            child: Icon(icon, color: theme.colorScheme.primary, size: 28),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openUrl(String url) async {
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      // Error al abrir la URL
+    }
+  }
+}

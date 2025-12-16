@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigation extends StatelessWidget {
@@ -14,53 +15,51 @@ class CustomBottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+        child: Container(
+          decoration: BoxDecoration(color: Colors.transparent),
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            currentIndex: currentIndex,
+            onTap: onTap,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 12,
+            unselectedFontSize: 12,
+            iconSize: 26,
+            items: [
+              BottomNavigationBarItem(
+                icon: _AnimatedIcon(
+                  icon: Icons.home_outlined,
+                  activeIcon: Icons.home_rounded,
+                  isActive: currentIndex == 0,
+                  color: theme.colorScheme.primary,
+                ),
+                label: "Inicio",
+              ),
+              BottomNavigationBarItem(
+                icon: _AnimatedIcon(
+                  icon: Icons.shuffle_rounded,
+                  activeIcon: Icons.shuffle_rounded,
+                  isActive: currentIndex == 1,
+                  color: theme.colorScheme.primary,
+                ),
+                label: "Aleatorias",
+              ),
+              BottomNavigationBarItem(
+                icon: _AnimatedIcon(
+                  icon: Icons.favorite_outline,
+                  activeIcon: Icons.favorite_rounded,
+                  isActive: currentIndex == 2,
+                  color: theme.colorScheme.primary,
+                ),
+                label: "Favoritos",
+              ),
+            ],
           ),
-        ],
-      ),
-      child: BottomNavigationBar(
-        elevation: 0,
-        currentIndex: currentIndex,
-        onTap: onTap,
-        type: BottomNavigationBarType.fixed,
-        selectedFontSize: 12,
-        unselectedFontSize: 12,
-        iconSize: 26,
-        items: [
-          BottomNavigationBarItem(
-            icon: _AnimatedIcon(
-              icon: Icons.home_outlined,
-              activeIcon: Icons.home_rounded,
-              isActive: currentIndex == 0,
-              color: theme.colorScheme.primary,
-            ),
-            label: "Inicio",
-          ),
-          BottomNavigationBarItem(
-            icon: _AnimatedIcon(
-              icon: Icons.shuffle_rounded,
-              activeIcon: Icons.shuffle_rounded,
-              isActive: currentIndex == 1,
-              color: theme.colorScheme.primary,
-            ),
-            label: "Aleatorias",
-          ),
-          BottomNavigationBarItem(
-            icon: _AnimatedIcon(
-              icon: Icons.favorite_outline,
-              activeIcon: Icons.favorite_rounded,
-              isActive: currentIndex == 2,
-              color: theme.colorScheme.primary,
-            ),
-            label: "Favoritos",
-          ),
-        ],
+        ),
       ),
     );
   }
