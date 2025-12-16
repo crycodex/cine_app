@@ -297,61 +297,64 @@ class CustomAppBar extends ConsumerWidget {
 
   Widget _buildMenuSheet(BuildContext context, ThemeData theme, WidgetRef ref) {
     final bottomPadding = MediaQuery.of(context).padding.bottom;
-    final bottomNavHeight = 60.0;
 
     return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.0, end: 1.0),
+      tween: Tween(begin: 1.0, end: 0.0),
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCubic,
       builder: (context, value, child) {
+        // Translate from full screen height down to 0 as value goes from 1.0 to 0.0
         return Transform.translate(
-          offset: Offset(0, 50 * (1 - value)),
-          child: Opacity(opacity: value, child: child),
+          offset: Offset(0, MediaQuery.of(context).size.height * value),
+          child: child,
         );
       },
-      child: Padding(
-        padding: EdgeInsets.only(bottom: bottomPadding + bottomNavHeight),
-        child: Container(
-          decoration: BoxDecoration(
-            color: theme.scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.3),
-                blurRadius: 30,
-                offset: const Offset(0, -10),
-                spreadRadius: 0,
-              ),
-            ],
-          ),
-          child: SafeArea(
-            top: false,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildDragHandle(theme),
-                _StaggeredAnimation(
-                  delay: 0,
-                  child: _buildThemeSwitch(context, theme, ref),
-                ),
-                _StaggeredAnimation(
-                  delay: 100,
-                  child: _buildMenuTile(
-                    context,
-                    theme,
-                    Icons.info_outline_rounded,
-                    "Créditos",
-                    "Información del desarrollador",
-                    () {
-                      HapticFeedback.lightImpact();
-                      Navigator.pop(context);
-                      Future.delayed(const Duration(milliseconds: 200), () {
-                        context.push("/credits");
-                      });
-                    },
-                  ),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomPadding),
+          child: Container(
+            decoration: BoxDecoration(
+              color: theme.scaffoldBackgroundColor,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 30,
+                  offset: const Offset(0, -10),
+                  spreadRadius: 0,
                 ),
               ],
+            ),
+            child: SafeArea(
+              top: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildDragHandle(theme),
+                  _StaggeredAnimation(
+                    delay: 0,
+                    child: _buildThemeSwitch(context, theme, ref),
+                  ),
+                  _StaggeredAnimation(
+                    delay: 100,
+                    child: _buildMenuTile(
+                      context,
+                      theme,
+                      Icons.info_outline_rounded,
+                      "Créditos",
+                      "Información del desarrollador",
+                      () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                        Future.delayed(const Duration(milliseconds: 200), () {
+                          context.push("/credits");
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
