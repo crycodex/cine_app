@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 enum AppThemeMode {
   light,
@@ -48,6 +49,7 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(_themeKey, mode.index);
     } catch (e) {
+      debugPrint("error setting theme: $e");
     }
   }
 

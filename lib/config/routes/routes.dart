@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cine_app/presentation/screens/screens.dart';
 import 'package:cine_app/presentation/views/views.dart';
-import 'package:cine_app/presentation/screens/about/credits_screen.dart';
 
 final GlobalKey<NavigatorState> _homeNavigatorState = GlobalKey<NavigatorState>(
   debugLabel: "homeNavigator",

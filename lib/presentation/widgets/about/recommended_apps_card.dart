@@ -81,7 +81,7 @@ class RecommendedAppsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.2),
@@ -131,7 +131,7 @@ class RecommendedAppsCard extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.3),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: theme.colorScheme.outline.withValues(alpha: 0.2),

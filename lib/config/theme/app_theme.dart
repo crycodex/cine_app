@@ -16,7 +16,7 @@ class AppTheme {
       onError: Colors.white,
       surface: isDarkMode ? const Color(0xFF1E1E1E) : Colors.white,
       onSurface: isDarkMode ? Colors.white : Colors.black,
-      surfaceVariant: isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFF5F5F5),
+      surfaceContainerHighest: isDarkMode ? const Color(0xFF2C2C2C) : const Color(0xFFF5F5F5),
       onSurfaceVariant: isDarkMode ? Colors.grey[300]! : Colors.grey[700]!,
       outline: isDarkMode ? Colors.grey[700]! : Colors.grey[300]!,
       outlineVariant: isDarkMode ? Colors.grey[800]! : Colors.grey[200]!,

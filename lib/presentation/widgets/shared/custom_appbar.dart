@@ -101,6 +101,7 @@ class CustomAppBar extends ConsumerWidget {
                       ),
                     ).then(
                       (movie) => movie != null
+                          // ignore: use_build_context_synchronously
                           ? context.push("/movie/${movie.id}")
                           : null,
                     );
@@ -212,7 +213,7 @@ class CustomAppBar extends ConsumerWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? theme.colorScheme.primary.withValues(alpha: 0.15)
-              : theme.colorScheme.surfaceVariant,
+              : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color: isSelected
@@ -316,10 +317,12 @@ class CustomAppBar extends ConsumerWidget {
           child: Container(
             decoration: BoxDecoration(
               color: theme.scaffoldBackgroundColor,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(28),
+              ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.3),
+                  color: Colors.black.withValues(alpha: 0.3),
                   blurRadius: 30,
                   offset: const Offset(0, -10),
                   spreadRadius: 0,
@@ -348,6 +351,7 @@ class CustomAppBar extends ConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.pop(context);
                         Future.delayed(const Duration(milliseconds: 200), () {
+                          // ignore: use_build_context_synchronously
                           context.push("/credits");
                         });
                       },
