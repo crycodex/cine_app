@@ -8,7 +8,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
+  try {
+    // En release, el archivo .env se carga desde assets del bundle
+    // dotenv.load() busca el archivo en assets cuando está en pubspec.yaml
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    // Si falla con el nombre específico, intenta cargar sin especificar
+    try {
+      await dotenv.load();
+    } catch (e2) {
+      // Si todo falla, muestra warning pero continúa
+      debugPrint("Warning: Could not load .env file: $e2");
+      debugPrint(
+        "The app may not work correctly without environment variables.",
+      );
+    }
+  }
+
+  // Verificar que la API key esté cargada
+  final apiKey = dotenv.env["MOVIE_KEY"] ?? "";
+  if (apiKey.isEmpty) {
+    debugPrint("⚠️ Warning: MOVIE_KEY is not set in .env file");
+  } else {
+    debugPrint("✅ MOVIE_KEY loaded successfully (length: ${apiKey.length})");
+  }
+
   runApp(const ProviderScope(child: MyApp()));
 }
 

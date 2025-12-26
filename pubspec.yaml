@@ -2,7 +2,7 @@ name: cine_app
 description: "Cine App es una aplicación de películas que te permite buscar películas, ver información de películas"
 publish_to: 'none'
 
-version: 1.0.1+2
+version: 1.0.1+3
 
 environment:
   sdk: ^3.9.0
